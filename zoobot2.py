@@ -3,6 +3,7 @@ from discord import Game
 from discord.ext.commands import Bot
 import requests
 import asyncio
+import os
 
 BOT_PREFIX = "!"
 TOKEN = os.environ['TOKEN']
@@ -23,9 +24,9 @@ async def on_message(message):
     	msg = "{0.author.mention}, what team do you wish to join? !Zoo, !DNA, !Hunter, !Tech are available options.".format(message)
     	await client.send_message(message.channel, msg)
 
-    if message.content('!Zoo'):
-    	msg = "The Zookeepers' Alliance would be happy to have you! (Function coming soon)"
-    	await client.say(msg)
+    if message.content.startswith('!Zoo'):
+    	msg = "The Zookeepers' Alliance would be happy to have you! (Function coming soon)".format(message)
+    	await client.send_message(message.channel, msg)
     	
 
 # @client.event
