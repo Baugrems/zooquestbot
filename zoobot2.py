@@ -5,7 +5,7 @@ import requests
 import asyncio
 
 BOT_PREFIX = "!"
-TOKEN = "NDk5ODA5NDU2NDY5NzA0NzE0.DqBroA.TUh-fkBUTNPEUGuIxbTgbnQjkCs"
+TOKEN = os.environ['TOKEN']
 
 client = Bot(command_prefix=BOT_PREFIX)
 
