@@ -27,12 +27,6 @@ async def on_message(message):
     	msg = "The Zookeepers' Alliance would be happy to have you! (Function coming soon)"
     	await client.say(msg)
     	
-@client.event
-async def on_ready():
-    print('Logged in as')
-    print(client.user.name)
-    print(client.user.id)
-    print('------')
 
 # @client.event
 # async def on_message_delete(msg):
