@@ -42,15 +42,9 @@ async def on_message(message):
     # If a role in the user's list of roles matches one we're checking
     			await client.send_message(message.channel, "You already have a team role. If you want to switch, message a moderator.")
     			return
-    		
     	msg = "The Zookeepers' Alliance would be happy to have you! Setting role now!".format(message)
-    	print(Server.roles)
-    	for server in client.servers:
-    		for role in server.roles:
-    			print(role.id + " " + role.name)
+    	await client.send_message(message.channel, msg)
     	role = discord.utils.get(message.server.roles, name='Zookeeper')
-    	# role: discord.Role = 'Zookeeper'
-    	print(role.id)
     	try:
     		await client.add_roles(message.author, role)
     		await client.send_message(message.channel, "Successfully added role {0}".format(role.name))
@@ -59,8 +53,57 @@ async def on_message(message):
     	msg = "{0.author.mention} has joined the Zookeeper Team.".format(message)
     	await client.send_message(client.get_channel('499817122663235625'), msg)
     
-    if message.content.startswith('!delete'):
-    	await client.delete_message(message)
+    if message.content.startswith('!Tech'):
+    	for r in message.author.roles:
+    		if r.id in team_roles:
+    # If a role in the user's list of roles matches one we're checking
+    			await client.send_message(message.channel, "You already have a team role. If you want to switch, message a moderator.")
+    			return
+    	msg = "Tech Lovers United would be happy to have you! Setting role now!".format(message)
+    	await client.send_message(message.channel, msg)
+    	role = discord.utils.get(message.server.roles, name='Tech')
+    	try:
+    		await client.add_roles(message.author, role)
+    		await client.send_message(message.channel, "Successfully added role {0}".format(role.name))
+    	except discord.Forbidden:
+    		await client.send_message(message.channel, "I don't have perms to add roles.")
+    	msg = "{0.author.mention} has joined the Tech Lovers Team.".format(message)
+    	await client.send_message(client.get_channel('499817122663235625'), msg)
+
+    if message.content.startswith('!DNA'):
+    	for r in message.author.roles:
+    		if r.id in team_roles:
+    # If a role in the user's list of roles matches one we're checking
+    			await client.send_message(message.channel, "You already have a team role. If you want to switch, message a moderator.")
+    			return
+    	msg = "The DNA Bashers would be happy to have you! Setting role now!".format(message)
+    	await client.send_message(message.channel, msg)
+    	role = discord.utils.get(message.server.roles, name='DNA')
+    	try:
+    		await client.add_roles(message.author, role)
+    		await client.send_message(message.channel, "Successfully added role {0}".format(role.name))
+    	except discord.Forbidden:
+    		await client.send_message(message.channel, "I don't have perms to add roles.")
+    	msg = "{0.author.mention} has joined the DNA Team.".format(message)
+    	await client.send_message(client.get_channel('499817122663235625'), msg)
+
+    if message.content.startswith('!Hunter'):
+    	for r in message.author.roles:
+    		if r.id in team_roles:
+    # If a role in the user's list of roles matches one we're checking
+    			await client.send_message(message.channel, "You already have a team role. If you want to switch, message a moderator.")
+    			return
+    	msg = "The Sport Hunters Guild would be happy to have you! Setting role now!".format(message)
+    	await client.send_message(message.channel, msg)
+    	role = discord.utils.get(message.server.roles, name='Hunter')
+    	try:
+    		await client.add_roles(message.author, role)
+    		await client.send_message(message.channel, "Successfully added role {0}".format(role.name))
+    	except discord.Forbidden:
+    		await client.send_message(message.channel, "I don't have perms to add roles.")
+    	msg = "{0.author.mention} has joined the Hunter Team.".format(message)
+    	await client.send_message(client.get_channel('499817122663235625'), msg)
+
 
     if message.content.startswith('!clear'):
     	tmp = await client.send_message(message.channel, 'Clearing messages...')
@@ -80,9 +123,13 @@ async def on_raw_message_delete(messsage):
 async def on_ready():
 	await client.change_presence(game=Game(name="with SWC's Server"))
 	print("Logged in as " + client.user.name)
-	for server in client.servers:
-		for channel in server.channels:
-			print(channel.id + " " + channel.name)
+	# for server in client.servers:
+	# 	for channel in server.channels:
+	# 		print(channel.id + " " + channel.name)
+	# print(Server.roles)
+ #    	for server in client.servers:
+ #    		for role in server.roles:
+ #    			print(role.id + " " + role.name)
 
 
 # @client.command()
