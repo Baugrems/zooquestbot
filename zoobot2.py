@@ -5,9 +5,20 @@ import requests
 import asyncio
 import os
 from discord import Channel
+from discord import Role
+from discord import Server
+import discord
+
 
 BOT_PREFIX = "!"
 TOKEN = os.environ['TOKEN']
+
+team_roles = [
+	"499807766865510410",
+	"499808342546317312",
+	"499808421164482561",
+	"499808472804753410"
+]
 
 client = Bot(command_prefix=BOT_PREFIX)
 
@@ -26,7 +37,26 @@ async def on_message(message):
     	await client.send_message(message.channel, msg)
 
     if message.content.startswith('!Zoo'):
-    	msg = "The Zookeepers' Alliance would be happy to have you! (Function coming soon)".format(message)
+    	for r in message.author.roles:
+    		if r.id in team_roles:
+    # If a role in the user's list of roles matches one we're checking
+    			await client.send_message(message.channel, "You already have a team role. If you want to switch, message a moderator.")
+    			return
+    		
+    	msg = "The Zookeepers' Alliance would be happy to have you! Setting role now!".format(message)
+    	print(Server.roles)
+    	for server in client.servers:
+    		for role in server.roles:
+    			print(role.id + " " + role.name)
+    	role = discord.utils.get(message.server.roles, name='Zookeeper')
+    	# role: discord.Role = 'Zookeeper'
+    	print(role.id)
+    	try:
+    		await client.add_roles(message.author, role)
+    		await client.send_message(message.channel, "Successfully added role {0}".format(role.name))
+    	except discord.Forbidden:
+    		await client.send_message(message.channel, "I don't have perms to add roles.")
+    	msg = "{0.author.mention} has joined the Zookeeper Team.".format(message)
     	await client.send_message(client.get_channel('499817122663235625'), msg)
     
     if message.content.startswith('!delete'):
@@ -52,7 +82,7 @@ async def on_ready():
 	print("Logged in as " + client.user.name)
 	for server in client.servers:
 		for channel in server.channels:
-			print(channel.id)
+			print(channel.id + " " + channel.name)
 
 
 # @client.command()
