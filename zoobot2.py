@@ -4,6 +4,7 @@ from discord.ext.commands import Bot
 import requests
 import asyncio
 import os
+from discord import Channel
 
 BOT_PREFIX = "!"
 TOKEN = os.environ['TOKEN']
@@ -26,17 +27,33 @@ async def on_message(message):
 
     if message.content.startswith('!Zoo'):
     	msg = "The Zookeepers' Alliance would be happy to have you! (Function coming soon)".format(message)
-    	await client.send_message(message.channel, msg)
-    	
+    	await client.send_message(client.get_channel('499817122663235625'), msg)
+    
+    if message.content.startswith('!delete'):
+    	await client.delete_message(message)
 
-# @client.event
-# async def on_message_delete(msg):
-# 	await client.send_message(channel(logs), msg)
+    if message.content.startswith('!clear'):
+    	tmp = await client.send_message(message.channel, 'Clearing messages...')
+    	async for msg in client.logs_from(message.channel):
+    		await client.delete_message(msg)
+
+@client.listen()
+async def on_raw_message_delete(messsage):
+	await client.send_message(client.get_channel('499817122663235625'), message)
+
+# @client.listen()
+# async def on_message_edit(before, after):
+# 	msg = before
+# 	await client.send_message(message.channel, msg)
 
 @client.event
 async def on_ready():
 	await client.change_presence(game=Game(name="with SWC's Server"))
 	print("Logged in as " + client.user.name)
+	for server in client.servers:
+		for channel in server.channels:
+			print(channel.id)
+
 
 # @client.command()
 # async def bitcoin():
