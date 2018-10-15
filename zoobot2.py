@@ -28,15 +28,20 @@ async def on_message(message):
     if message.author == client.user:
         return
 
-    if message.content.startswith('!hello'):
+    if message.content.lower().startswith('!hello'):
         msg = 'Hello {0.author.mention}'.format(message)
         await client.send_message(message.channel, msg)
 
-    if message.content.startswith('!team'):
+    if message.content.lower().startswith('!team'):
+    	for r in message.author.roles:
+    		if r.id in team_roles:
+    # If a role in the user's list of roles matches one we're checking
+    			await client.send_message(message.channel, "You already have a team role. If you want to switch, message a moderator.")
+    			return
     	msg = "{0.author.mention}, what team do you wish to join? !Zoo, !DNA, !Hunter, !Tech are available options.".format(message)
     	await client.send_message(message.channel, msg)
 
-    if message.content.startswith('!Zoo'):
+    if message.content.lower().startswith('!zoo'):
     	for r in message.author.roles:
     		if r.id in team_roles:
     # If a role in the user's list of roles matches one we're checking
@@ -53,7 +58,7 @@ async def on_message(message):
     	msg = "{0.author.mention} has joined the Zookeeper Team.".format(message)
     	await client.send_message(client.get_channel('499817122663235625'), msg)
     
-    if message.content.startswith('!Tech'):
+    if message.content.lower().startswith('!tech'):
     	for r in message.author.roles:
     		if r.id in team_roles:
     # If a role in the user's list of roles matches one we're checking
@@ -70,7 +75,7 @@ async def on_message(message):
     	msg = "{0.author.mention} has joined the Tech Lovers Team.".format(message)
     	await client.send_message(client.get_channel('499817122663235625'), msg)
 
-    if message.content.startswith('!DNA'):
+    if message.content.lower().startswith('!dna'):
     	for r in message.author.roles:
     		if r.id in team_roles:
     # If a role in the user's list of roles matches one we're checking
@@ -87,7 +92,7 @@ async def on_message(message):
     	msg = "{0.author.mention} has joined the DNA Team.".format(message)
     	await client.send_message(client.get_channel('499817122663235625'), msg)
 
-    if message.content.startswith('!Hunter'):
+    if message.content.lower().startswith('!hunter'):
     	for r in message.author.roles:
     		if r.id in team_roles:
     # If a role in the user's list of roles matches one we're checking
@@ -104,11 +109,17 @@ async def on_message(message):
     	msg = "{0.author.mention} has joined the Hunter Team.".format(message)
     	await client.send_message(client.get_channel('499817122663235625'), msg)
 
-
+    # command meant for dev only to clear annoying discord spam from bot testing, comment out when going live.
     if message.content.startswith('!clear'):
     	tmp = await client.send_message(message.channel, 'Clearing messages...')
     	async for msg in client.logs_from(message.channel):
     		await client.delete_message(msg)
+
+@client.event
+async def on_member_join(member):
+	msg = 'Welcome, {0.mention}! Which team are you on? Say !team for a list.'.format(member)
+	await client.send_message(client.get_channel('499807356327297037'), msg)
+
 
 @client.listen()
 async def on_raw_message_delete(messsage):
@@ -164,6 +175,8 @@ async def list_servers():
 			print(server.name)
 		print("------")
 		await asyncio.sleep(600)
+
+#client.get_channel('499807356327297037') Genera channel
 
 client.loop.create_task(list_servers())
 client.run(TOKEN)
